@@ -1,0 +1,19 @@
+We are assessing two potential siting locations in the U.S. for a large-load industrial or data-center customer. We will “grade” each location based on the following weighted criteria:
+
+1. **Grid availability (40%)** — How easily and cost-effectively we can connect a large load, considering distribution system hosting capacity, transmission infrastructure, and interconnection risk.  
+2. **Access to renewable energy (30%)** — Proportion of generation in the region from renewables, especially wind, solar, and clean sources, and the likelihood of procurement or power purchase agreements (PPAs) from clean energy.  
+3. **Government regulations (10%)** — The strength of clean-energy policy in the state (e.g., Renewable Portfolio Standard (RPS), clean energy or carbon-free targets, regulatory risk or support).
+
+Any other relevant siting factors (land cost, permitting risk, environmental risk, distance to grid, etc.) should be considered together and split evenly with whatever weighting remains (i.e. 20%).
+
+Compare **Location A** and **Location B**, using real, publicly available data, and compute a weighted grade for each location. Then recommend which site is better based on your grade.
+
+Use U.S.-based data sources (e.g., DOE hosting capacity maps, EIA generation by source, state clean energy standards) rather than made-up numbers. Provide your reasoning, data sources, and assumptions.
+
+---
+
+**Location candidates to compare**:  
+- **Location A**: *Iowa (central / mid-west)* — high wind generation share  
+- **Location B**: *Texas (e.g., in ERCOT region)* — large grid, lots of renewables, but regulatory complexity  
+
+Compute a score out of 100 for each location given the weights, and choose which is better.  
