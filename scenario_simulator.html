@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Scenario Simulator - Digital Twin Impact Analysis</title>
+    <link rel="stylesheet" href="scenario_simulator.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">GRID SCENARIO SIMULATOR</h1>
+                <p class="subtitle">Digital Twin Impact Analysis - US Transmission Network</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Panel -->
+            <section class="input-panel">
+                <h2 class="section-title">CONFIGURE SCENARIO</h2>
+                
+                <div class="input-grid">
+                    <!-- Location Input -->
+                    <div class="input-group">
+                        <label class="input-label">LOCATION</label>
+                        <select id="locationSelect" class="input-field">
+                            <option value="">Select Site...</option>
+                            <option value="custom">Custom Coordinates</option>
+                            <optgroup label="Major Grid Nodes">
+                                <option value="37.7749,-122.4194">San Francisco, CA</option>
+                                <option value="34.0522,-118.2437">Los Angeles, CA</option>
+                                <option value="47.6062,-122.3321">Seattle, WA</option>
+                                <option value="45.5152,-122.6784">Portland, OR</option>
+                                <option value="40.7589,-111.8910">Salt Lake City, UT</option>
+                                <option value="39.7392,-104.9903">Denver, CO</option>
+                                <option value="32.7767,-96.7970">Dallas, TX</option>
+                                <option value="29.7604,-95.3698">Houston, TX</option>
+                                <option value="30.2672,-97.7431">Austin, TX</option>
+                                <option value="33.4484,-112.0740">Phoenix, AZ</option>
+                                <option value="41.8781,-87.6298">Chicago, IL</option>
+                                <option value="39.7684,-86.1581">Indianapolis, IN</option>
+                                <option value="42.3314,-83.0458">Detroit, MI</option>
+                                <option value="40.7128,-74.0060">New York, NY</option>
+                                <option value="42.3601,-71.0589">Boston, MA</option>
+                                <option value="40.4406,-79.9959">Pittsburgh, PA</option>
+                                <option value="38.9072,-77.0369">Washington, DC</option>
+                                <option value="33.7490,-84.3880">Atlanta, GA</option>
+                                <option value="25.7617,-80.1918">Miami, FL</option>
+                                <option value="35.2271,-80.8431">Charlotte, NC</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div id="customCoords" class="input-group" style="display: none;">
+                        <label class="input-label">LATITUDE</label>
+                        <input type="number" id="latInput" class="input-field" placeholder="e.g., 37.7749" step="0.0001" min="-90" max="90">
+                    </div>
+
+                    <div id="customCoordsLon" class="input-group" style="display: none;">
+                        <label class="input-label">LONGITUDE</label>
+                        <input type="number" id="lonInput" class="input-field" placeholder="e.g., -122.4194" step="0.0001" min="-180" max="180">
+                    </div>
+
+                    <!-- Project Type -->
+                    <div class="input-group">
+                        <label class="input-label">PROJECT TYPE</label>
+                        <select id="projectType" class="input-field">
+                            <option value="datacenter">Data Center</option>
+                            <option value="electrolyzer">Electrolyzer</option>
+                            <option value="evhub">EV Charging Hub</option>
+                            <option value="hydrogen">Hydrogen Plant</option>
+                            <option value="aicluster">AI Compute Cluster</option>
+                        </select>
+                    </div>
+
+                    <!-- Load Size -->
+                    <div class="input-group">
+                        <label class="input-label">LOAD SIZE (MW)</label>
+                        <input type="number" id="loadSize" class="input-field" placeholder="e.g., 50" value="50" min="1" max="500">
+                    </div>
+                </div>
+
+                <button id="runScenario" class="run-button">
+                    <span class="button-text">RUN SCENARIO</span>
+                    <span class="button-glow"></span>
+                </button>
+            </section>
+
+            <!-- Animation Container -->
+            <section id="animationSection" class="animation-section" style="display: none;">
+                <h2 class="section-title">DIGITAL TWIN IMPACT REPLAY</h2>
+                
+                <div class="animation-container">
+                    <div id="map" class="map-container"></div>
+                    
+                    <div class="timeline-overlay">
+                        <div class="timeline-bar">
+                            <div id="timelineProgress" class="timeline-progress"></div>
+                        </div>
+                        <div id="timelineLabel" class="timeline-label">T = 0s - Baseline Conditions</div>
+                    </div>
+
+                    <div id="impactOverlay" class="impact-overlay">
+                        <div class="impact-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">CONGESTION IMPACT</span>
+                                <span id="congestionStat" class="stat-value">--</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">CURTAILMENT REDUCTION</span>
+                                <span id="curtailmentStat" class="stat-value">--</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">EMISSIONS CHANGE</span>
+                                <span id="emissionsStat" class="stat-value">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Panel -->
+                <div id="resultsPanel" class="results-panel" style="display: none;">
+                    <div class="verdict-header">
+                        <div id="verdictBadge" class="verdict-badge"></div>
+                        <h3 id="verdictTitle" class="verdict-title"></h3>
+                    </div>
+                    
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <h4 class="result-title">GRID IMPACTS</h4>
+                            <ul id="gridImpactsList" class="results-list"></ul>
+                        </div>
+                        
+                        <div class="result-card">
+                            <h4 class="result-title">ECONOMIC ANALYSIS</h4>
+                            <ul id="economicList" class="results-list"></ul>
+                        </div>
+                        
+                        <div class="result-card">
+                            <h4 class="result-title">ENVIRONMENTAL BENEFITS</h4>
+                            <ul id="environmentalList" class="results-list"></ul>
+                        </div>
+                        
+                        <div class="result-card">
+                            <h4 class="result-title">REOPT RECOMMENDATIONS</h4>
+                            <ul id="reoptList" class="results-list"></ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Long-term Projections -->
+            <section id="projectionsSection" class="projections-section" style="display: none;">
+                <h2 class="section-title">LONG-TERM SCENARIO INSIGHTS (2025-2040)</h2>
+                
+                <div class="projections-grid">
+                    <div class="projection-card">
+                        <h4 class="projection-title">RENEWABLE PENETRATION FORECAST</h4>
+                        <canvas id="renewableChart"></canvas>
+                        <p class="projection-description" id="renewableDesc"></p>
+                    </div>
+                    
+                    <div class="projection-card">
+                        <h4 class="projection-title">REGIONAL COST TRAJECTORY</h4>
+                        <canvas id="costChart"></canvas>
+                        <p class="projection-description" id="costDesc"></p>
+                    </div>
+                    
+                    <div class="projection-card">
+                        <h4 class="projection-title">EMISSIONS REDUCTION PATHWAY</h4>
+                        <canvas id="emissionsChart"></canvas>
+                        <p class="projection-description" id="emissionsDesc"></p>
+                    </div>
+                    
+                    <div class="projection-card">
+                        <h4 class="projection-title">LOAD GROWTH HOTSPOTS</h4>
+                        <div id="hotspotsList" class="hotspots-list"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- REopt Analysis -->
+            <section id="reoptSection" class="reopt-section" style="display: none;">
+                <h2 class="section-title">REOPT OPTIMIZATION SCENARIOS</h2>
+                
+                <div class="reopt-grid">
+                    <div class="reopt-card">
+                        <div class="reopt-header">
+                            <h4 class="reopt-title">BASELINE</h4>
+                            <span class="reopt-subtitle">No On-Site Generation</span>
+                        </div>
+                        <div class="reopt-metrics">
+                            <div class="metric-row">
+                                <span class="metric-label">Annual Grid Cost</span>
+                                <span id="baselineCost" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Peak Demand</span>
+                                <span id="baselinePeak" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Emissions</span>
+                                <span id="baselineEmissions" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Resilience</span>
+                                <span class="metric-value">0 hours</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="reopt-card">
+                        <div class="reopt-header">
+                            <h4 class="reopt-title">SOLAR ONLY</h4>
+                            <span class="reopt-subtitle">Optimized PV System</span>
+                        </div>
+                        <div class="reopt-metrics">
+                            <div class="metric-row">
+                                <span class="metric-label">Solar Capacity</span>
+                                <span id="solarCapacity" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Annual Cost</span>
+                                <span id="solarCost" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Cost Savings</span>
+                                <span id="solarSavings" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Emissions Reduction</span>
+                                <span id="solarEmissionsReduction" class="metric-value">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="reopt-card reopt-recommended">
+                        <div class="reopt-header">
+                            <h4 class="reopt-title">SOLAR + STORAGE</h4>
+                            <span class="reopt-subtitle">Optimized Hybrid System</span>
+                            <span class="recommended-badge">RECOMMENDED</span>
+                        </div>
+                        <div class="reopt-metrics">
+                            <div class="metric-row">
+                                <span class="metric-label">Solar Capacity</span>
+                                <span id="hybridSolar" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Battery Storage</span>
+                                <span id="hybridBattery" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Annual Cost</span>
+                                <span id="hybridCost" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Total Savings</span>
+                                <span id="hybridSavings" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Peak Reduction</span>
+                                <span id="hybridPeakReduction" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Resilience Hours</span>
+                                <span id="hybridResilience" class="metric-value">--</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-label">Emissions Reduction</span>
+                                <span id="hybridEmissionsReduction" class="metric-value">--</span>
+                            </div>
+                        </div>
+                        <div class="reopt-recommendation">
+                            <p id="reoptRecommendation" class="recommendation-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Scenario Comparison Dashboard -->
+            <section id="dashboardSection" class="dashboard-section" style="display: none;">
+                <h2 class="section-title">SCENARIO COMPARISON DASHBOARD</h2>
+                
+                <div class="year-selector">
+                    <button class="year-btn active" data-year="2025">2025</button>
+                    <button class="year-btn" data-year="2030">2030</button>
+                    <button class="year-btn" data-year="2035">2035</button>
+                    <button class="year-btn" data-year="2040">2040</button>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h4 class="dashboard-title">RENEWABLE GENERATION MIX</h4>
+                        <canvas id="generationMixChart"></canvas>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <h4 class="dashboard-title">CAPACITY EXPANSION</h4>
+                        <canvas id="capacityChart"></canvas>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <h4 class="dashboard-title">CARBON INTENSITY</h4>
+                        <canvas id="carbonIntensityChart"></canvas>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <h4 class="dashboard-title">REGIONAL COMPARISON</h4>
+                        <div id="regionalComparison" class="regional-comparison"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Data Sources: PowerSimData | EIA | EPA eGRID | NREL Cambium | NREL ReEDS | NREL REopt</p>
+        </footer>
+    </div>
+
+    <script src="scenario_simulator.js"></script>
+    <script src="animation.js"></script>
+</body>
+</html>
