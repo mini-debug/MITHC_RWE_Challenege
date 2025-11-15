@@ -97,7 +97,53 @@
                 <h2 class="section-title">DIGITAL TWIN IMPACT REPLAY</h2>
                 
                 <div class="animation-container">
-                    <div id="map" class="map-container"></div>
+                    <!-- Image Slideshow Container -->
+                    <div id="slideshow" class="slideshow-container">
+                        <!-- Slide 1: Baseline -->
+                        <div class="slide active" data-step="0">
+                            <canvas id="canvas0" width="1400" height="500"></canvas>
+                            <div class="slide-caption">
+                                <h3>BASELINE CONDITIONS</h3>
+                                <p>Current grid status showing regional congestion levels</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 2: Load Deployment -->
+                        <div class="slide" data-step="1">
+                            <canvas id="canvas1" width="1400" height="500"></canvas>
+                            <div class="slide-caption">
+                                <h3>NEW LOAD DEPLOYMENT</h3>
+                                <p>Your load appears at the selected location</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 3: Congestion Analysis -->
+                        <div class="slide" data-step="2">
+                            <canvas id="canvas2" width="1400" height="500"></canvas>
+                            <div class="slide-caption">
+                                <h3>CONGESTION ANALYSIS</h3>
+                                <p>Impact on transmission bottlenecks</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 4: Renewable Integration -->
+                        <div class="slide" data-step="3">
+                            <canvas id="canvas3" width="1400" height="500"></canvas>
+                            <div class="slide-caption">
+                                <h3>RENEWABLE INTEGRATION</h3>
+                                <p>Curtailment reduction and clean energy absorption</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 5: Emissions Impact -->
+                        <div class="slide" data-step="4">
+                            <canvas id="canvas4" width="1400" height="500"></canvas>
+                            <div class="slide-caption">
+                                <h3>EMISSIONS IMPACT</h3>
+                                <p>Carbon intensity changes and environmental benefits</p>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="timeline-overlay">
                         <div class="timeline-bar">
@@ -325,6 +371,7 @@
     </div>
 
     <script src="scenario_simulator.js"></script>
+    <script src="slideshow_animation.js"></script>
     <script src="animation.js"></script>
 </body>
 </html>
