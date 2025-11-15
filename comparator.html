@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Battle Comparator | Energy Grid Analysis</title>
+    <link rel="stylesheet" href="comparator.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">SITE BATTLE COMPARATOR</h1>
+                <p class="subtitle">Energy Grid Strategic Analysis System</p>
+            </div>
+        </header>
+
+        <!-- Site Selection Panel -->
+        <section class="selection-panel">
+            <div class="selection-card">
+                <h2 class="section-title">SELECT LOCATIONS</h2>
+                <div class="selection-grid">
+                    <div class="site-selector site-a">
+                        <label for="site-a-select">SITE A</label>
+                        <select id="site-a-select" class="neon-select">
+                            <option value="">Choose Location...</option>
+                            <option value="CAISO_North">California ISO - North</option>
+                            <option value="CAISO_South">California ISO - South</option>
+                            <option value="ERCOT_West">ERCOT - West Texas</option>
+                            <option value="ERCOT_Houston">ERCOT - Houston</option>
+                            <option value="PJM_West">PJM - Western Region</option>
+                            <option value="PJM_East">PJM - Eastern Region</option>
+                            <option value="MISO_North">MISO - North</option>
+                            <option value="MISO_South">MISO - South</option>
+                            <option value="SPP_North">SPP - Northern Plains</option>
+                            <option value="NYISO_NYC">NYISO - New York City</option>
+                            <option value="ISONE_Boston">ISO-NE - Boston Area</option>
+                        </select>
+                    </div>
+                    <div class="vs-divider">VS</div>
+                    <div class="site-selector site-b">
+                        <label for="site-b-select">SITE B</label>
+                        <select id="site-b-select" class="neon-select">
+                            <option value="">Choose Location...</option>
+                            <option value="CAISO_North">California ISO - North</option>
+                            <option value="CAISO_South">California ISO - South</option>
+                            <option value="ERCOT_West">ERCOT - West Texas</option>
+                            <option value="ERCOT_Houston">ERCOT - Houston</option>
+                            <option value="PJM_West">PJM - Western Region</option>
+                            <option value="PJM_East">PJM - Eastern Region</option>
+                            <option value="MISO_North">MISO - North</option>
+                            <option value="MISO_South">MISO - South</option>
+                            <option value="SPP_North">SPP - Northern Plains</option>
+                            <option value="NYISO_NYC">NYISO - New York City</option>
+                            <option value="ISONE_Boston">ISO-NE - Boston Area</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="compare-btn" class="compare-button">INITIATE BATTLE</button>
+            </div>
+        </section>
+
+        <!-- Company DNA Slider Panel -->
+        <section class="dna-panel" id="dna-panel">
+            <h2 class="section-title">COMPANY DNA PRIORITIES</h2>
+            <div class="dna-grid">
+                <div class="dna-slider">
+                    <label>Cost Focus</label>
+                    <input type="range" id="cost-slider" min="0" max="100" value="50" class="slider">
+                    <span class="slider-value" id="cost-value">50</span>
+                </div>
+                <div class="dna-slider">
+                    <label>Climate Focus</label>
+                    <input type="range" id="climate-slider" min="0" max="100" value="50" class="slider">
+                    <span class="slider-value" id="climate-value">50</span>
+                </div>
+                <div class="dna-slider">
+                    <label>Reliability Focus</label>
+                    <input type="range" id="reliability-slider" min="0" max="100" value="50" class="slider">
+                    <span class="slider-value" id="reliability-value">50</span>
+                </div>
+                <div class="dna-slider">
+                    <label>Community Impact Focus</label>
+                    <input type="range" id="community-slider" min="0" max="100" value="50" class="slider">
+                    <span class="slider-value" id="community-value">50</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Time Travel Controls -->
+        <section class="time-panel" id="time-panel">
+            <h2 class="section-title">TIME TRAVEL DUEL</h2>
+            <div class="time-controls">
+                <div class="year-slider-container">
+                    <input type="range" id="year-slider" min="2025" max="2040" step="5" value="2025" class="year-slider">
+                    <div class="year-labels">
+                        <span>2025</span>
+                        <span>2030</span>
+                        <span>2035</span>
+                        <span>2040</span>
+                    </div>
+                </div>
+                <div class="current-year-display">
+                    <span class="year-label">YEAR</span>
+                    <span class="year-number" id="current-year">2025</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Container -->
+        <div id="results-container" class="results-container hidden">
+            
+            <!-- Battle Cards -->
+            <section class="battle-cards">
+                <div class="battle-card site-a-card" id="site-a-card">
+                    <div class="card-header">
+                        <h3 class="card-title" id="site-a-name">SITE A</h3>
+                        <div class="winner-badge" id="site-a-badge">WINNER</div>
+                    </div>
+                    <div class="card-stats" id="site-a-stats"></div>
+                    <div class="dealbreakers" id="site-a-dealbreakers"></div>
+                </div>
+
+                <div class="battle-card site-b-card" id="site-b-card">
+                    <div class="card-header">
+                        <h3 class="card-title" id="site-b-name">SITE B</h3>
+                        <div class="winner-badge" id="site-b-badge">WINNER</div>
+                    </div>
+                    <div class="card-stats" id="site-b-stats"></div>
+                    <div class="dealbreakers" id="site-b-dealbreakers"></div>
+                </div>
+            </section>
+
+            <!-- Criterion Battle Section -->
+            <section class="criterion-battle">
+                <h2 class="section-title">CRITERION-BY-CRITERION BATTLE</h2>
+                <div class="criteria-grid" id="criteria-grid"></div>
+            </section>
+
+            <!-- Time Travel Forecast -->
+            <section class="forecast-section">
+                <h2 class="section-title">FUTURE PERFORMANCE FORECAST</h2>
+                <div class="forecast-grid" id="forecast-grid"></div>
+            </section>
+
+            <!-- Narrative Summary -->
+            <section class="narrative-section">
+                <h2 class="section-title">STRATEGIC SUMMARY</h2>
+                <div class="narrative-box" id="narrative-box"></div>
+            </section>
+
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loader"></div>
+            <p class="loading-text">Analyzing grid data...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data-integration.js"></script>
+    <script src="comparator.js"></script>
+</body>
+</html>
