@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Site Evaluation | Sustainable Energy Analysis</title>
+    <link rel="stylesheet" href="lobby.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container">
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg class="logo-image" width="60" height="60" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- G+ Logo -->
+                    <text x="10" y="85" font-family="Arial, sans-serif" font-size="70" font-weight="bold" fill="#81865e">G</text>
+                    <text x="75" y="50" font-family="Arial, sans-serif" font-size="45" font-weight="bold" fill="#e4b858">+</text>
+                </svg>
+                <div>
+                    <h1>Grid Site Evaluation</h1>
+                    <p>Sustainable Energy Analysis</p>
+                </div>
+            </div>
+            <div class="slogan">
+                "Positive impacts, zero emissions"
+            </div>
+        </header>
+
+        <!-- Introduction -->
+        <section class="intro">
+            <h2>Evaluate Grid Sites for Sustainable Energy Deployment</h2>
+            <p>Follow the three-step process to analyze transmission infrastructure, simulate scenarios, and compare optimal locations for renewable energy projects.</p>
+        </section>
+
+        <!-- Roadmap Steps -->
+        <div class="roadmap">
+            
+            <!-- Step 1: Map Layers -->
+            <div class="step" id="step1">
+                <div class="step-header">
+                    <div class="step-number">01</div>
+                    <div class="step-title">
+                        <h3>Grid Infrastructure Analysis</h3>
+                        <p>Explore transmission lines, renewable zones, and carbon intensity through interactive map layers</p>
+                    </div>
+                </div>
+                
+                <div class="step-content">
+                    <div class="features">
+                        <div class="feature">
+                            <span class="icon">●</span>
+                            <span>Transmission Grid</span>
+                        </div>
+                        <div class="feature">
+                            <span class="icon">■</span>
+                            <span>Renewable Resources</span>
+                        </div>
+                        <div class="feature">
+                            <span class="icon">★</span>
+                            <span>Carbon Intensity</span>
+                        </div>
+                        <div class="feature">
+                            <span class="icon">◆</span>
+                            <span>Infrastructure Sites</span>
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button class="btn-primary" onclick="goToMap()">
+                            <span>Explore Map Layers</span>
+                            <span class="arrow">→</span>
+                        </button>
+                        <button class="btn-next" onclick="showStep(2)">
+                            <span>Next Step</span>
+                            <span class="arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Scenario Simulation -->
+            <div class="step" id="step2" style="display: none;">
+                <div class="step-header">
+                    <div class="step-number">02</div>
+                    <div class="step-title">
+                        <h3>Site Scenario Simulation</h3>
+                        <p>Evaluate specific locations for energy load deployment with real grid data analysis</p>
+                    </div>
+                </div>
+                
+                <div class="step-content">
+                    <div class="features">
+                        <div class="feature">
+                            <span class="icon">●</span>
+                            <span>Grid Score Analysis</span>
+                        </div>
+                        <div class="feature">
+                            <span class="icon">■</span>
+                            <span>Carbon Footprint</span>
+                        </div>
+                        <div class="feature">
+                            <span class="icon">★</span>
+                            <span>Cost Evaluation</span>
+                        </div>
+                        <div class="feature">
+                            <span class="icon">◆</span>
+                            <span>Renewable Integration</span>
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button class="btn-secondary" onclick="showStep(1)">
+                            <span class="arrow">←</span>
+                            <span>Previous</span>
+                        </button>
+                        <button class="btn-primary" onclick="goToScenario()">
+                            <span>Run Simulation</span>
+                            <span class="arrow">→</span>
+                        </button>
+                        <button class="btn-next" onclick="showStep(3)">
+                            <span>Next Step</span>
+                            <span class="arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Site Comparison -->
+            <div class="step" id="step3" style="display: none;">
+                <div class="step-header">
+                    <div class="step-number">03</div>
+                    <div class="step-title">
+                        <h3>Site Comparison</h3>
+                        <p>Compare multiple locations to identify the optimal site for your energy project</p>
+                    </div>
+                </div>
+                
+                <div class="step-content">
+                    <div class="features">
+                        <div class="feature">
+                            <span class="icon">●</span>
+                            <span>Head-to-Head Analysis</span>
+                        </div>
+                        <div class="feature">
+                            <span class="icon">■</span>
+                            <span>Performance Metrics</span>
+                        </div>
+                        <div class="feature">
+                            <span class="icon">★</span>
+                            <span>Winner Selection</span>
+                        </div>
+                        <div class="feature">
+                            <span class="icon">◆</span>
+                            <span>Final Recommendation</span>
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button class="btn-secondary" onclick="showStep(2)">
+                            <span class="arrow">←</span>
+                            <span>Previous</span>
+                        </button>
+                        <button class="btn-primary" onclick="goToComparator()">
+                            <span>Compare Sites</span>
+                            <span class="arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="progress-bar">
+            <div class="progress-step active" data-step="1">
+                <div class="progress-dot"></div>
+                <span>Infrastructure</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="2">
+                <div class="progress-dot"></div>
+                <span>Simulation</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="3">
+                <div class="progress-dot"></div>
+                <span>Comparison</span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Powered by real grid data | EIA • EPA eGRID • NREL • PowerSimData</p>
+        </footer>
+
+    </div>
+
+    <script src="lobby.js"></script>
+</body>
+</html>

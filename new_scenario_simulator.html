@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Scenario Simulation | G+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="scenario_styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 120 120">
+                <text x="10" y="85" font-size="70" font-weight="bold" fill="#81865e">G</text>
+                <text x="75" y="50" font-size="45" font-weight="bold" fill="#e4b858">+</text>
+            </svg>
+            <div>
+                <h1>Site Scenario Simulation</h1>
+                <p>"Positive impacts, zero emissions"</p>
+            </div>
+        </div>
+        <button class="back-btn" onclick="window.location.href='lobby.html'">← Back to Roadmap</button>
+    </header>
+
+    <div class="container">
+        <!-- Configuration Panel -->
+        <section class="config-panel">
+            <h2>Configure Simulation</h2>
+            
+            <div class="config-grid">
+                <div class="config-item">
+                    <label>Select Site Location</label>
+                    <select id="siteLocation">
+                        <option value="">Choose location...</option>
+                        <option value="sf">San Francisco Bay Area</option>
+                        <option value="seattle">Seattle Metro</option>
+                        <option value="austin">Austin Tech Corridor</option>
+                        <option value="portland">Portland Metro</option>
+                        <option value="denver">Denver Region</option>
+                        <option value="phoenix">Phoenix Solar Belt</option>
+                        <option value="raleigh">Raleigh-Durham</option>
+                        <option value="chicago">Chicago Metro</option>
+                        <option value="atlanta">Atlanta Region</option>
+                        <option value="boston">Boston Area</option>
+                    </select>
+                </div>
+                
+                <div class="config-item">
+                    <label>Energy Load (MW)</label>
+                    <input type="number" id="loadMW" value="100" min="10" max="10000" step="10">
+                </div>
+                
+                <div class="config-item">
+                    <label>Deployment Type</label>
+                    <select id="deployType">
+                        <option value="datacenter">Data Center</option>
+                        <option value="industrial">Industrial Facility</option>
+                        <option value="manufacturing">Manufacturing Plant</option>
+                        <option value="tech">Tech Campus</option>
+                    </select>
+                </div>
+                
+                <div class="config-item">
+                    <label>Renewable Target (%)</label>
+                    <input type="number" id="renewableTarget" value="80" min="0" max="100" step="5">
+                </div>
+                
+                <div class="config-item">
+                    <label>Project Duration (years)</label>
+                    <input type="number" id="duration" value="10" min="1" max="30">
+                </div>
+                
+                <div class="config-item">
+                    <label>Storage Integration</label>
+                    <select id="storage">
+                        <option value="none">No Storage</option>
+                        <option value="small">Small (10% of load)</option>
+                        <option value="medium">Medium (25% of load)</option>
+                        <option value="large">Large (50% of load)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="simulate-btn" onclick="runSimulation()">Run Simulation</button>
+        </section>
+
+        <!-- Results Panel -->
+        <section class="results-panel" id="results" style="display:none;">
+            <h2>Simulation Results</h2>
+            
+            <div class="score-card" id="scoreCard"></div>
+            
+            <div class="results-grid">
+                <div class="result-section">
+                    <h3>Environmental Impact</h3>
+                    <div id="envResults"></div>
+                </div>
+                
+                <div class="result-section">
+                    <h3>Grid Performance</h3>
+                    <div id="gridResults"></div>
+                </div>
+                
+                <div class="result-section">
+                    <h3>Economic Analysis</h3>
+                    <div id="ecoResults"></div>
+                </div>
+                
+                <div class="result-section">
+                    <h3>Renewable Integration</h3>
+                    <div id="renewResults"></div>
+                </div>
+            </div>
+            
+            <div class="recommendations" id="recommendations"></div>
+        </section>
+    </div>
+
+    <script src="shared_data.js"></script>
+    <script src="map_data.js"></script>
+    <script src="scenario_logic.js"></script>
+</body>
+</html>

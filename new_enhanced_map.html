@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Infrastructure Analysis | G+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="map_styles.css">
+</head>
+<body>
+    <div id="map"></div>
+    
+    <!-- Header -->
+    <div class="map-header">
+        <svg width="35" height="35" viewBox="0 0 120 120">
+            <text x="10" y="85" font-size="70" font-weight="bold" fill="#81865e">G</text>
+            <text x="75" y="50" font-size="45" font-weight="bold" fill="#e4b858">+</text>
+        </svg>
+        <div class="map-header-text">
+            <h3>Grid Infrastructure Analysis</h3>
+            <p>"Positive impacts, zero emissions"</p>
+        </div>
+    </div>
+    
+    <!-- Control Panel -->
+    <div class="control-panel">
+        <h2>Map Layers</h2>
+        
+        <div class="layer-section">
+            <h3>Infrastructure</h3>
+            <label class="layer-control">
+                <input type="checkbox" id="transmission" onchange="toggleLayer('transmission')">
+                <div class="layer-icon" style="color: #e4b858;">━</div>
+                <div class="layer-name">Transmission</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="substations" onchange="toggleLayer('substations')">
+                <div class="layer-icon" style="color: #81865e;">⬟</div>
+                <div class="layer-name">Substations</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="congestion" onchange="toggleLayer('congestion')">
+                <div class="layer-icon" style="color: #ff6b6b;">★</div>
+                <div class="layer-name">Congestion</div>
+            </label>
+        </div>
+        
+        <div class="layer-section">
+            <h3>Renewables</h3>
+            <label class="layer-control">
+                <input type="checkbox" id="solar" onchange="toggleLayer('solar')">
+                <div class="layer-icon" style="color: #e4b858;">●</div>
+                <div class="layer-name">Solar</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="wind" onchange="toggleLayer('wind')">
+                <div class="layer-icon" style="color: #81865e;">▲</div>
+                <div class="layer-name">Wind</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="hydro" onchange="toggleLayer('hydro')">
+                <div class="layer-icon" style="color: #4ecdc4;">~</div>
+                <div class="layer-name">Hydro</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="geothermal" onchange="toggleLayer('geothermal')">
+                <div class="layer-icon" style="color: #ff9800;">◆</div>
+                <div class="layer-name">Geothermal</div>
+            </label>
+        </div>
+        
+        <div class="layer-section">
+            <h3>Environmental</h3>
+            <label class="layer-control">
+                <input type="checkbox" id="carbon" onchange="toggleLayer('carbon')">
+                <div class="layer-icon" style="color: #ff6b6b;">●</div>
+                <div class="layer-name">Carbon</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="emissions" onchange="toggleLayer('emissions')">
+                <div class="layer-icon" style="color: #9e9e9e;">▨</div>
+                <div class="layer-name">Emissions</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="airquality" onchange="toggleLayer('airquality')">
+                <div class="layer-icon" style="color: #66bb6a;">○</div>
+                <div class="layer-name">Air Quality</div>
+            </label>
+        </div>
+        
+        <div class="layer-section">
+            <h3>Economic</h3>
+            <label class="layer-control">
+                <input type="checkbox" id="prices" onchange="toggleLayer('prices')">
+                <div class="layer-icon" style="color: #e4b858;">$</div>
+                <div class="layer-name">Prices</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="costs" onchange="toggleLayer('costs')">
+                <div class="layer-icon" style="color: #81865e;">💰</div>
+                <div class="layer-name">Costs</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="incentives" onchange="toggleLayer('incentives')">
+                <div class="layer-icon" style="color: #9c27b0;">✓</div>
+                <div class="layer-name">Incentives</div>
+            </label>
+        </div>
+        
+        <div class="layer-section">
+            <h3>Demand</h3>
+            <label class="layer-control">
+                <input type="checkbox" id="demand" onchange="toggleLayer('demand')">
+                <div class="layer-icon" style="color: #242526;">■</div>
+                <div class="layer-name">Load Centers</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="growth" onchange="toggleLayer('growth')">
+                <div class="layer-icon" style="color: #81865e;">↗</div>
+                <div class="layer-name">Growth</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="industrial" onchange="toggleLayer('industrial')">
+                <div class="layer-icon" style="color: #607d8b;">⚙</div>
+                <div class="layer-name">Industrial</div>
+            </label>
+        </div>
+        
+        <div class="layer-section">
+            <h3>Storage</h3>
+            <label class="layer-control">
+                <input type="checkbox" id="storage" onchange="toggleLayer('storage')">
+                <div class="layer-icon" style="color: #ff9800;">⚡</div>
+                <div class="layer-name">Battery</div>
+            </label>
+            <label class="layer-control">
+                <input type="checkbox" id="pumped" onchange="toggleLayer('pumped')">
+                <div class="layer-icon" style="color: #4ecdc4;">◈</div>
+                <div class="layer-name">Pumped Hydro</div>
+            </label>
+        </div>
+        
+        <div class="layer-section">
+            <h3>Recommendations</h3>
+            <label class="layer-control">
+                <input type="checkbox" id="ranked" onchange="toggleLayer('ranked')">
+                <div class="layer-icon" style="color: #e4b858;">📍</div>
+                <div class="layer-name">Top Sites</div>
+            </label>
+        </div>
+    </div>
+    
+    <!-- Ranking Panel -->
+    <div class="ranking-panel">
+        <h3>Top Sites by Score</h3>
+        <div id="ranking-list"></div>
+    </div>
+    
+    <button class="back-button" onclick="window.location.href='lobby.html'">← Back</button>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="shared_data.js"></script>
+    <script src="map_data.js"></script>
+    <script>
+        // Initialize map with light tiles
+        const map = L.map('map').setView([39.8283, -98.5795], 4);
+        
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap &copy; CARTO',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+        
+        // Layer groups (all start hidden)
+        const layers = {
+            transmission: L.layerGroup(),
+            substations: L.layerGroup(),
+            congestion: L.layerGroup(),
+            solar: L.layerGroup(),
+            wind: L.layerGroup(),
+            hydro: L.layerGroup(),
+            geothermal: L.layerGroup(),
+            carbon: L.layerGroup(),
+            emissions: L.layerGroup(),
+            airquality: L.layerGroup(),
+            prices: L.layerGroup(),
+            costs: L.layerGroup(),
+            incentives: L.layerGroup(),
+            demand: L.layerGroup(),
+            growth: L.layerGroup(),
+            industrial: L.layerGroup(),
+            storage: L.layerGroup(),
+            pumped: L.layerGroup(),
+            ranked: L.layerGroup()
+        };
+        
+        // Initialize shared data
+        if (window.SharedData) { window.SharedData.initialize(); }
+        
+        // Add ranked sites with detailed popups
+        rankedSites.forEach(site => {
+            const icon = L.divIcon({
+                className: 'ranked-icon',
+                html: `<div style="width:28px;height:28px;background:#e4b858;border:3px solid #81865e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.3);">${site.rank}</div>`,
+                iconSize: [28, 28],
+                iconAnchor: [14, 14]
+            });
+            
+            const marker = L.marker([site.lat, site.lng], {icon}).addTo(layers.ranked);
+            
+            marker.bindPopup(`
+                <h4>🏆 #${site.rank} - ${site.name}</h4>
+                <strong>Score:</strong> ${site.score}/100<br><br>
+                <strong>Environmental:</strong><br>
+                • Carbon: ${site.carbon} kg CO2/MWh<br>
+                • Renewable: ${site.renewable}%<br>
+                • Air Quality: ${site.airQuality}<br><br>
+                <strong>Infrastructure:</strong><br>
+                • Transmission: ${site.transmission}<br>
+                • Storage: ${site.storage} MW<br>
+                • Demand: ${site.demand.toLocaleString()} MW<br><br>
+                <strong>Economics:</strong><br>
+                • Cost: $${site.cost}M<br>
+                • Price: $${site.price}/MWh<br>
+                • Growth: ${site.growth}%/yr<br><br>
+                <strong>Incentives:</strong><br>
+                ${site.incentives.join(', ')}
+            `, {maxWidth: 280});
+            
+            marker.on('click', () => map.setView([site.lat, site.lng], 8));
+        });
+        
+        // Populate ranking list
+        const list = document.getElementById('ranking-list');
+        rankedSites.slice(0, 5).forEach(site => {
+            const div = document.createElement('div');
+            div.className = 'ranking-item';
+            div.innerHTML = `
+                <div class="ranking-number">${site.rank}</div>
+                <div><div class="ranking-city">${site.name}</div>
+                <div class="ranking-score">Score: ${site.score}/100</div></div>
+            `;
+            div.onclick = () => {
+                map.setView([site.lat, site.lng], 8);
+                layers.ranked.eachLayer(l => {
+                    if (l.getLatLng().lat === site.lat) l.openPopup();
+                });
+            };
+            list.appendChild(div);
+        });
+        
+        // Add transmission lines
+        transmissionLines.forEach(line => {
+            L.polyline(line.coords, {
+                color: '#e4b858',
+                weight: 3,
+                opacity: 0.7,
+                dashArray: '10, 5'
+            }).bindPopup(`<strong>${line.name}</strong><br>Capacity: ${line.capacity} MW<br>Voltage: ${line.voltage} kV`)
+            .addTo(layers.transmission);
+        });
+        
+        // Add solar sites
+        solarSites.forEach(site => {
+            const icon = L.divIcon({
+                html: '<div style="width:14px;height:14px;background:#e4b858;border:2px solid #fff;border-radius:50%;"></div>',
+                iconSize: [14, 14],
+                iconAnchor: [7, 7]
+            });
+            L.marker([site.lat, site.lng], {icon}).bindPopup(`
+                <strong>${site.name}</strong><br>
+                Capacity: ${site.capacity} MW<br>
+                Capacity Factor: ${site.cf}%
+            `).addTo(layers.solar);
+        });
+        
+        // Add wind sites
+        windSites.forEach(site => {
+            const icon = L.divIcon({
+                html: '<div style="width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid #81865e;"></div>',
+                iconSize: [14, 12],
+                iconAnchor: [7, 6]
+            });
+            L.marker([site.lat, site.lng], {icon}).bindPopup(`
+                <strong>${site.name}</strong><br>
+                Capacity: ${site.capacity} MW<br>
+                Capacity Factor: ${site.cf}%
+            `).addTo(layers.wind);
+        });
+        
+        // Add storage facilities
+        storageFacilities.forEach(site => {
+            const icon = L.divIcon({
+                html: '<div style="font-size:16px;color:#ff9800;">⚡</div>',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8]
+            });
+            L.marker([site.lat, site.lng], {icon}).bindPopup(`
+                <strong>${site.name}</strong><br>
+                Capacity: ${site.capacity} MW<br>
+                Type: ${site.type}
+            `).addTo(layers.storage);
+        });
+        
+        // Add substations
+        rankedSites.forEach(site => {
+            const icon = L.divIcon({
+                html: '<div style="width:10px;height:10px;background:#81865e;border:2px solid #fff;transform:rotate(45deg);"></div>',
+                iconSize: [10, 10],
+                iconAnchor: [5, 5]
+            });
+            L.marker([site.lat + 0.5, site.lng + 0.5], {icon}).bindPopup(`Substation near ${site.name}`)
+            .addTo(layers.substations);
+        });
+        
+        // Add congestion zones
+        congestionZones.forEach(zone => {
+            const icon = L.divIcon({
+                html: '<div style="font-size:18px;color:#ff6b6b;">★</div>',
+                iconSize: [18, 18],
+                iconAnchor: [9, 9]
+            });
+            L.marker([zone.lat, zone.lng], {icon}).bindPopup(`
+                <strong>${zone.name}</strong><br>
+                Severity: ${zone.severity}<br>
+                Congestion Cost: $${zone.cost}/MWh
+            `).addTo(layers.congestion);
+        });
+        
+        // Add hydro sites
+        hydroSites.forEach(site => {
+            const icon = L.divIcon({
+                html: '<div style="font-size:16px;color:#4ecdc4;">~</div>',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8]
+            });
+            L.marker([site.lat, site.lng], {icon}).bindPopup(`
+                <strong>${site.name}</strong><br>
+                Capacity: ${site.capacity} MW<br>
+                Type: ${site.type}
+            `).addTo(layers.hydro);
+        });
+        
+        // Add geothermal sites
+        geothermalSites.forEach(site => {
+            const icon = L.divIcon({
+                html: '<div style="width:12px;height:12px;background:#ff9800;border:2px solid #fff;transform:rotate(45deg);"></div>',
+                iconSize: [12, 12],
+                iconAnchor: [6, 6]
+            });
+            L.marker([site.lat, site.lng], {icon}).bindPopup(`
+                <strong>${site.name}</strong><br>
+                Capacity: ${site.capacity} MW<br>
+                Temperature: ${site.temp}°C
+            `).addTo(layers.geothermal);
+        });
+        
+        // Add carbon zones (color-coded by intensity)
+        carbonZones.forEach(zone => {
+            const color = zone.level === 'low' ? '#66bb6a' : 
+                         zone.level === 'medium' ? '#e4b858' : '#ff6b6b';
+            const icon = L.divIcon({
+                html: `<div style="width:16px;height:16px;background:${color};border:2px solid #fff;border-radius:50%;"></div>`,
+                iconSize: [16, 16],
+                iconAnchor: [8, 8]
+            });
+            L.marker([zone.lat, zone.lng], {icon}).bindPopup(`
+                <strong>${zone.name}</strong><br>
+                Carbon Intensity: ${zone.intensity} kg CO2/MWh<br>
+                Level: ${zone.level}
+            `).addTo(layers.carbon);
+        });
+        
+        // Add emissions zones
+        emissionsZones.forEach(zone => {
+            const icon = L.divIcon({
+                html: '<div style="width:14px;height:14px;background:#9e9e9e;border:2px solid #fff;"></div>',
+                iconSize: [14, 14],
+                iconAnchor: [7, 7]
+            });
+            L.marker([zone.lat, zone.lng], {icon}).bindPopup(`
+                <strong>${zone.name}</strong><br>
+                Annual Emissions: ${zone.emissions} tons<br>
+                Pollutants: ${zone.pollutants.join(', ')}
+            `).addTo(layers.emissions);
+        });
+        
+        // Add air quality sites
+        airQualitySites.forEach(site => {
+            const color = site.aqi < 50 ? '#66bb6a' : site.aqi < 100 ? '#e4b858' : '#ff6b6b';
+            const icon = L.divIcon({
+                html: `<div style="width:14px;height:14px;background:transparent;border:3px solid ${color};border-radius:50%;"></div>`,
+                iconSize: [14, 14],
+                iconAnchor: [7, 7]
+            });
+            L.marker([site.lat, site.lng], {icon}).bindPopup(`
+                <strong>${site.name}</strong><br>
+                AQI: ${site.aqi}<br>
+                Quality: ${site.quality}
+            `).addTo(layers.airquality);
+        });
+        
+        // Add price zones
+        priceZones.forEach(zone => {
+            const icon = L.divIcon({
+                html: '<div style="font-size:14px;color:#e4b858;font-weight:bold;">$</div>',
+                iconSize: [14, 14],
+                iconAnchor: [7, 7]
+            });
+            L.marker([zone.lat, zone.lng], {icon}).bindPopup(`
+                <strong>${zone.name}</strong><br>
+                Price: $${zone.price}/MWh<br>
+                Trend: ${zone.trend}
+            `).addTo(layers.prices);
+        });
+        
+        // Add cost locations
+        costLocations.forEach(location => {
+            const icon = L.divIcon({
+                html: '<div style="font-size:16px;color:#81865e;">💰</div>',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8]
+            });
+            L.marker([location.lat, location.lng], {icon}).bindPopup(`
+                <strong>${location.name}</strong><br>
+                LCOE: $${location.lcoe}/MWh<br>
+                Type: ${location.type}
+            `).addTo(layers.costs);
+        });
+        
+        // Add incentive zones
+        incentiveZones.forEach(zone => {
+            const icon = L.divIcon({
+                html: '<div style="font-size:16px;color:#9c27b0;">✓</div>',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8]
+            });
+            L.marker([zone.lat, zone.lng], {icon}).bindPopup(`
+                <strong>${zone.name}</strong><br>
+                Program: ${zone.program}<br>
+                Value: ${zone.value}
+            `).addTo(layers.incentives);
+        });
+        
+        // Add load centers (demand)
+        loadCenters.forEach(center => {
+            const icon = L.divIcon({
+                html: '<div style="width:12px;height:12px;background:#242526;border:2px solid #fff;"></div>',
+                iconSize: [12, 12],
+                iconAnchor: [6, 6]
+            });
+            L.marker([center.lat, center.lng], {icon}).bindPopup(`
+                <strong>${center.name}</strong><br>
+                Current Demand: ${center.demand.toLocaleString()} MW<br>
+                Peak: ${center.peak.toLocaleString()} MW
+            `).addTo(layers.demand);
+        });
+        
+        // Add growth zones
+        growthZones.forEach(zone => {
+            const icon = L.divIcon({
+                html: '<div style="font-size:16px;color:#81865e;">↗</div>',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8]
+            });
+            L.marker([zone.lat, zone.lng], {icon}).bindPopup(`
+                <strong>${zone.name}</strong><br>
+                Growth Rate: ${zone.rate}%/year<br>
+                Projection: ${zone.projection}
+            `).addTo(layers.growth);
+        });
+        
+        // Add industrial zones
+        industrialZones.forEach(zone => {
+            const icon = L.divIcon({
+                html: '<div style="font-size:16px;color:#607d8b;">⚙</div>',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8]
+            });
+            L.marker([zone.lat, zone.lng], {icon}).bindPopup(`
+                <strong>${zone.name}</strong><br>
+                Type: ${zone.type}<br>
+                Load: ${zone.load.toLocaleString()} MW
+            `).addTo(layers.industrial);
+        });
+        
+        // Add pumped hydro storage
+        pumpedHydroSites.forEach(site => {
+            const icon = L.divIcon({
+                html: '<div style="font-size:16px;color:#4ecdc4;">◈</div>',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8]
+            });
+            L.marker([site.lat, site.lng], {icon}).bindPopup(`
+                <strong>${site.name}</strong><br>
+                Capacity: ${site.capacity} MW<br>
+                Type: Pumped Hydro (${site.reservoir})
+            `).addTo(layers.pumped);
+        });
+        
+        // Toggle layer
+        function toggleLayer(name) {
+            if (document.getElementById(name).checked) {
+                map.addLayer(layers[name]);
+            } else {
+                map.removeLayer(layers[name]);
+            }
+        }
+        
+        console.log('Comprehensive map loaded with', Object.keys(layers).length, 'layer types');
+        console.log('All layers populated with data!');
+    </script>
+</body>
+</html>

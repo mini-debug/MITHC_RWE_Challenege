@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Comparison | G+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="comparator_styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 120 120">
+                <text x="10" y="85" font-size="70" font-weight="bold" fill="#81865e">G</text>
+                <text x="75" y="50" font-size="45" font-weight="bold" fill="#e4b858">+</text>
+            </svg>
+            <div>
+                <h1>Site Comparison</h1>
+                <p>"Positive impacts, zero emissions"</p>
+            </div>
+        </div>
+        <button class="back-btn" onclick="window.location.href='lobby.html'">← Back to Roadmap</button>
+    </header>
+
+    <div class="container">
+        <!-- Selection Panel -->
+        <section class="selection-panel">
+            <h2>Select Two Locations to Compare</h2>
+            <div class="selection-grid">
+                <div class="site-box">
+                    <label>SITE A</label>
+                    <select id="siteA">
+                        <option value="">Choose location...</option>
+                        <option value="sf">San Francisco Bay Area</option>
+                        <option value="seattle">Seattle Metro</option>
+                        <option value="austin">Austin Tech Corridor</option>
+                        <option value="portland">Portland Metro</option>
+                        <option value="denver">Denver Region</option>
+                        <option value="phoenix">Phoenix Solar Belt</option>
+                        <option value="raleigh">Raleigh-Durham</option>
+                        <option value="chicago">Chicago Metro</option>
+                        <option value="atlanta">Atlanta Region</option>
+                        <option value="boston">Boston Area</option>
+                    </select>
+                </div>
+                
+                <div class="vs-badge">VS</div>
+                
+                <div class="site-box">
+                    <label>SITE B</label>
+                    <select id="siteB">
+                        <option value="">Choose location...</option>
+                        <option value="sf">San Francisco Bay Area</option>
+                        <option value="seattle">Seattle Metro</option>
+                        <option value="austin">Austin Tech Corridor</option>
+                        <option value="portland">Portland Metro</option>
+                        <option value="denver">Denver Region</option>
+                        <option value="phoenix">Phoenix Solar Belt</option>
+                        <option value="raleigh">Raleigh-Durham</option>
+                        <option value="chicago">Chicago Metro</option>
+                        <option value="atlanta">Atlanta Region</option>
+                        <option value="boston">Boston Area</option>
+                    </select>
+                </div>
+            </div>
+            <button class="compare-btn" onclick="runComparison()">Compare Sites</button>
+        </section>
+
+        <!-- Results Panel -->
+        <section class="results-panel" id="results" style="display:none;">
+            <h2>Comparison Results</h2>
+            
+            <div class="winner-banner" id="winnerBanner"></div>
+            
+            <div class="comparison-grid">
+                <div class="site-result" id="resultA"></div>
+                <div class="site-result" id="resultB"></div>
+            </div>
+            
+            <div class="metrics-table" id="metricsTable"></div>
+        </section>
+    </div>
+
+    <script src="shared_data.js"></script>
+    <script src="map_data.js"></script>
+    <script src="comparator_logic.js"></script>
+</body>
+</html>
